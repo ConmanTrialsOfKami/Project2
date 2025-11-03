@@ -3,6 +3,9 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <ctime>
+#include "DecisionTree.cpp"
+#include "NaiveBayes.cpp"
 using namespace std;
 
 struct DataRow {
@@ -24,7 +27,7 @@ vector<DataRow> readCSV(string filename) {
 
         while (getline(ss, cell, ',')) {
             double val = stod(cell);
-            if (col == 5)
+            if (col == 20)
                 row.label = (int)val;
             else
                 row.features.push_back(val);
@@ -35,8 +38,77 @@ vector<DataRow> readCSV(string filename) {
     return data;
 }
 
+void splitData(vector<DataRow>& all, vector<DataRow>& train, vector<DataRow>& test) {
+    int splitPoint = all.size() * 0.8;
+    for (int i = 0; i < all.size(); i++) {
+        if (i < splitPoint) {
+            train.push_back(all[i]);
+        }
+        else {
+            test.push_back(all[i]);
+        }
+    }
+}
+
+double accuracy(vector<int> preds, vector<DataRow>& test) {
+    int correct = 0;
+    for (int i = 0; i < preds.size(); i++){
+        if (preds[i] == test[i].label) {
+            correct++;
+        }
+    }
+    return 100.0 * correct / preds.size();
+}
+
 int main() {
     vector<DataRow> data = readCSV("pokemon.csv");
-    cout << "Loaded " << data.size() << " rows." << endl;
+    if (data.empty()) {
+        cout << "Error: couldn't load dataset.\n";
+        return 1;
+    }
+
+    vector<DataRow> train, test;
+    splitData(data, train, test);
+
+    cout << "Predict 'em All: Water-Proximity\n";
+    cout << "1. Decision Tree\n2. Naive Bayes\n3. Compare Both\n";
+    cout << "Choose: ";
+
+    int choice;
+    cin >> choice;
+
+    if (choice == 1) {
+        clock_t start = clock();
+        DecisionTree tree;
+        tree.train(train);
+        vector<int> preds = tree.predictAll(test);
+        clock_t end = clock();
+        cout << "\nDecision Tree Accuracy: " << accuracy(preds, test) << "%";
+        cout << "\nRuntime: " << double(end - start) / CLOCKS_PER_SEC << " sec\n";
+    }
+    else if (choice == 2) {
+        clock_t start = clock();
+        NaiveBayes nb;
+        nb.train(train);
+        vector<int> preds = nb.predictAll(test);
+        clock_t end = clock();
+        cout << "\nNaive Bayes Accuracy: " << accuracy(preds, test) << "%";
+        cout << "\nRuntime: " << double(end - start) / CLOCKS_PER_SEC << " sec\n";
+    }
+    else if (choice == 3) {
+        DecisionTree tree; tree.train(train);
+        NaiveBayes nb; nb.train(train);
+
+        vector<int> preds1 = tree.predictAll(test);
+        vector<int> preds2 = nb.predictAll(test);
+
+        cout << "\nDecision Tree Accuracy: " << accuracy(preds1, test) << "%";
+        cout << "\nNaive Bayes Accuracy: " << accuracy(preds2, test) << "%\n";
+    }
+    else {
+        cout << "Invalid choice.\n";
+    }
+
     return 0;
 }
+
