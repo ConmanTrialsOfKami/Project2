@@ -15,7 +15,7 @@ public:
     vector<double> mean1;
     vector<double> var0;
     vector<double> var1;
-    double prior0
+    double prior0;
     double prior1;
 
     void train(vector<DataRow>& train) {
@@ -66,5 +66,29 @@ public:
 
         prior0 = (double)x / train.size();
         prior1 = (double)y / train.size();
+    }
+
+    int predictOne(DataRow& r) {
+        double logP0 = log(prior0);
+        double logP1 = log(prior1);
+        
+        for (int i = 0; i < r.features.size(); i++) {
+            double x = r.features[i];
+            logP0 += -pow(x - mean0[i], 2) / (2 * var0[i]);
+            logP1 += -pow(x - mean1[i], 2) / (2 * var1[i]);
+        }
+        
+        if(logP1 > logP0){
+            return 1;
+        } else{
+            return 0;
+        }
+    }
+
+    vector<int> predictAll(vector<DataRow>& test) {
+        vector<int> preds;
+        for (auto& r : test)
+            preds.push_back(predictOne(r));
+        return preds;
     }
 }
