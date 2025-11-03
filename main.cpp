@@ -23,9 +23,17 @@ vector<DataRow> readCSV(string filename) {
         int col = 0;
 
         while (getline(ss, cell, ',')) {
-            if (cell == "" || isalpha(cell[0])){
+            if (cell == "" || cell = "NA"){
                 cell = "0";
             }
+
+            if (cell == "TRUE" || cell == "True" || cell == "true"){
+                cell = "1";
+            }
+            if (cell == "FALSE" || cell == "False" || cell == "false"){
+                cell = "0";
+            }
+
             double val = atof(cell.c_str());
             if (col == 20){
                 row.label = (int)val;
@@ -111,7 +119,9 @@ int main() {
     else {
         cout << "Invalid choice.\n";
     }
-
+    cout << "\nPress Enter to exit...";
+    cin.ignore();
+    cin.get();
     return 0;
 }
 

@@ -39,8 +39,8 @@ public:
             }
         }
         for (int i = 0; i < nFeat; i++) {
-            mean0[i] /= x;
-            mean1[i] /= y;
+            mean0[i] /= max(1, x);
+            mean1[i] /= max(1, y);
         }
 
         for (auto& r : train) {
@@ -56,12 +56,12 @@ public:
             }
         }
         for (int i = 0; i < nFeat; i++) {
-            var0[i] /= x;
-            var1[i] /= y;
+            var0[i] = var0[i] / max(1, x) + 1e-6;
+            var1[i] = var1[i] / max(1, y) + 1e-6;
         }
 
-        prior0 = (double)x / train.size();
-        prior1 = (double)y / train.size();
+        prior0 = (double)x / train.size() + 1e-6;
+        prior1 = (double)y / train.size() + 1e-6;
     }
 
     int predictOne(DataRow& r) {
