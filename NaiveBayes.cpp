@@ -1,12 +1,8 @@
 #include <vector>
 #include <cmath>
 #include <iostream>
+#include "DataRow.h"
 using namespace std;
-
-struct DataRow {
-    vector<double> features;
-    int label;
-};
 
 
 class NaiveBayes {

@@ -6,12 +6,9 @@
 #include <ctime>
 #include "DecisionTree.cpp"
 #include "NaiveBayes.cpp"
+#include "DataRow.h"
 using namespace std;
 
-struct DataRow {
-    vector<double> features;
-    int label;
-};
 
 vector<DataRow> readCSV(string filename) {
     ifstream file(filename);

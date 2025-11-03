@@ -1,12 +1,10 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
+#include "DataRow.h"
 using namespace std;
 
-struct DataRow {
-    vector<double> features;
-    int label;
-};
+
 
 class DecisionTree {
 public:
