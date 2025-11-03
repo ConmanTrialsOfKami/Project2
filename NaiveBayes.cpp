@@ -25,7 +25,7 @@ public:
         var0.assign(nFeat, 0);
         var1.assign(nFeat, 0);
 
-        int x = 0
+        int x = 0;
         int y = 0;
 
         for (auto& r : train) {
@@ -87,8 +87,9 @@ public:
 
     vector<int> predictAll(vector<DataRow>& test) {
         vector<int> preds;
-        for (auto& r : test)
+        for (auto& r : test){
             preds.push_back(predictOne(r));
+        }
         return preds;
     }
-}
+};

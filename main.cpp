@@ -61,13 +61,14 @@ double accuracy(vector<int> preds, vector<DataRow>& test) {
 }
 
 int main() {
-    vector<DataRow> data = readCSV("pokemon.csv");
+    vector<DataRow> data = readCSV("300k.csv");
     if (data.empty()) {
         cout << "Error: couldn't load dataset.\n";
         return 1;
     }
 
-    vector<DataRow> train, test;
+    vector<DataRow> train;
+    vector<DataRow> test;
     splitData(data, train, test);
 
     cout << "Predict 'em All: Water-Proximity\n";
