@@ -23,11 +23,16 @@ vector<DataRow> readCSV(string filename) {
         int col = 0;
 
         while (getline(ss, cell, ',')) {
-            double val = stod(cell);
-            if (col == 20)
+            if (cell == "" || isalpha(cell[0])){
+                cell = "0";
+            }
+            double val = atof(cell.c_str());
+            if (col == 20){
                 row.label = (int)val;
-            else
+            }
+            else {
                 row.features.push_back(val);
+            }
             col++;
         }
         data.push_back(row);
