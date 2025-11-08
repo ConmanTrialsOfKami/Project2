@@ -76,7 +76,7 @@ public:
             logP0 += -pow(x - mean0[i], 2) / (2 * var0[i]);
             logP1 += -pow(x - mean1[i], 2) / (2 * var1[i]);
         }
-        // whicever has higher probability wins
+        // whichever has higher probability wins
         if(logP1 > logP0){
             return 1;
         } else{
