@@ -6,5 +6,6 @@ Download the csv, called 300k.csv, and put it in the folder where all the cpp fi
 After that, in this folder, open terminal, and do:
 
 g++ main.cpp -o predict
+./predict
 
 It'll create an exe file to run the program. It should appear in the folder now, and now you can click it, and the program will run. That is all you need.
